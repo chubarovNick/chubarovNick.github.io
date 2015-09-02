@@ -26,27 +26,15 @@ function addPhoto(base64, timestamp) {
 function confirmDelete(result) {
   switch (result) {
     case 1:
-      var index = items.indexOf(deletedItem);
-      if (index > -1) {
-        items.splice(index, 1);
-        deletedItem = undefined;
-        renderItems();
-      }
+      items.remove(deletedItem);
+      deletedItem = undefined;
+      renderItems();
       break;
   }
 }
 
 //Helpers
-function findItemById(id) {
-  var i;
-  for (i = 0; i < items.length; i++) {
-    if(items[i].id.toString() == id.toString()){
-      return items[i];
-    }
-  }
-}
-
-function save(){
+function save() {
   Android.saveItems(JSON.stringify(items));
 }
 
@@ -56,26 +44,24 @@ function guid() {
       .toString(16)
       .substring(1);
   }
+
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
     s4() + '-' + s4() + s4() + s4();
 }
 
 function setEventListners() {
-  var addButton = document.getElementById('add-button');
-  addButton.addEventListener('click', function () {
+  $('.add-button').on('click', function () {
     Android.requestPhoto();
   });
 
-  var removeButtons = document.getElementsByClassName('remove');
-
-  var i;
-  for (i = 0; i < removeButtons.length; i++) {
-    var button = removeButtons[i];
-    button.addEventListener('click', function () {
-      var itemId = button.getAttribute('id');
-      deleteItem(findItemById(itemId));
+  $('.remove').on('click', function () {
+    var itemId = this.getAttribute('id');
+    var item = items.find(function (x) {
+      return x.id.toString() === itemId;
     });
-  }
+    deleteItem(item);
+  });
+
 }
 
 function renderItems() {
@@ -85,7 +71,7 @@ function renderItems() {
     var item = items[i];
     itemsList += ('<li class="item-wrapper"> ' +
     '<span class="image-wrapper">' +
-      '<img class="image" src="data:image/jpeg;base64,'+item.base64+'"/>' +
+    '<img class="image" src="data:image/jpeg;base64,' + item.base64 + '"/>' +
     '</span>' +
     '<span class="timestamp">' + item.timestamp + '</span>' +
     '<span class="remove" id="' + item.id + '">X</span>' +
