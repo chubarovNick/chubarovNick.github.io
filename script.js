@@ -85,7 +85,7 @@ function renderItems() {
     var item = items[i];
     itemsList += ('<li class="item-wrapper"> ' +
     '<span class="image-wrapper">' +
-      '<span class="image" style="background-image: url(data:image/jpeg;base64,' +item.base64 + ')"></span>' +
+      '<img class="image" src="data:image/jpeg;base64,'+item.base64+'"/>' +
     '</span>' +
     '<span class="timestamp">' + item.timestamp + '</span>' +
     '<span class="remove" id="' + item.id + '">X</span>' +
