@@ -50,7 +50,7 @@ function guid() {
 }
 
 function setEventListners() {
-  $('.add-button').on('click', function () {
+  $('#add-button').on('click', function () {
     Android.requestPhoto();
   });
 
